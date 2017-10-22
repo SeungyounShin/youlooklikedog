@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>멍멍!</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/lib/bootstrap.min.css">
+  <script src="/lib/jquery-1.12.2.min.js"></script>
+  <script src="/lib/bootstrap.min.js"></script>
+  <style>
+  .bg-1 {
+      background-color: #1abc9c; /* Green */
+      color: #ffffff;
+  }
+  .bg-2 {
+      background-color: #474e5d; /* Dark Blue */
+      color: #ffffff;
+  }
+  .bg-3 {
+      background-color: #fff; /* White */
+      color: #555555;
+  }
+  .container-fluid {
+      padding-top: 70px;
+      padding-bottom: 70px;
+  }
+  .btn-file {
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+  }
+
+  #img-upload{
+    width: 100%;
+  }
+  .container {
+  width: 70%;
+  height: 70%;
+  margin: 40px auto;
+  background: #1abc9c;
+}
+  </style>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap-filestyle.min.js"> </script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+    $(document).ready( function() {
+
+    	$(document).on('change', '.btn-file :file', function() {
+		var input = $(this),
+			label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+		input.trigger('fileselect', [label]);
+		});
+
+		$('.btn-file :file').on('fileselect', function(event, label) {
+
+		    var input = $(this).parents('.input-group').find(':text'),
+		        log = label;
+
+		    if( input.length ) {
+		        input.val(log);
+		    } else {
+		        if( log ) alert(log);
+		    }
+
+		});
+
+		function readURL(input) {
+		    if (input.files && input.files[0]) {
+		        var reader = new FileReader();
+
+		        reader.onload = function (e) {
+		            $('#img-upload').attr('src', e.target.result);
+		        }
+
+		        reader.readAsDataURL(input.files[0]);
+		    }
+		}
+
+		$("#imgInp").change(function(){
+		    readURL(this);
+		});
+
+		$("#clear").click(function(){
+		    $('#img-upload').attr('src','');
+		    $('#urlname').val('');
+		});
+	});
+    </script>
+
+</head>
+<body>
+
+<div class="container-fluid bg-1 text-center">
+  <h3>개 같은 너 - 댕댕이 품종 분류기</h3>
+<img src="http://www.kunggu.com/resize/resize-img.php?src=http://www.kunggu.com/images/Animals/puppies-grass-dog-kids-lawn1351.jpg&h=720&w=1280" alt="dogs" height="190" width="384">
+  <body>
+<p></p>
+<p>자신 사진을 올리면 가장 닮은 강아지를 알려드려요!</p>
+      <form action = "http://dogbreadidentification.pythonanywhere.com/uploader" method = "POST"
+         enctype = "multipart/form-data">
+
+
+
+         <div class="container">
+<div class="col-md-6">
+    <div class="form-group">
+        <label>Upload Image</label>
+        <div class="input-group">
+            <span class="input-group-btn">
+                <span class="btn btn-default btn-file">
+                    Browse… <input type="file" name ="file" id="imgInp">
+                </span>
+            </span>
+            <input id='urlname'type="text" class="form-control" readonly>
+        </div><button id="clear" class="btn btn-default">Clear</button>
+       <span class="input-group-btn">
+                <span class="btn btn-default btn-file">
+                    <input type="submit"/>
+                </span>
+            </span>
+        <img id='img-upload'/>
+    </div>
+</div>
+</div>
+
+
+
+
+      </form>
+
+   </body>
+
+</div>
+
+<div class="container-fluid bg-2 text-center">
+  <h3>어떻게 이미지로만 댕댕이의 품종을 분류하나요?</h3>
+  <h4 style="text-align:left">이미지 분류 문제</h4>
+  <p style="text-align:left"> <a href="https://arxiv.org/abs/1409.1556">Very Deep Convolutional Networks for Large-Scale Image Recognition</a> 를 보면 3*3 Convolution 필터를 여러층 쌓은 레이어를 깊이 쌓은 몇개의 구조를 실험해보았는데 망의 깊이가 깊을수록 더 높은 정확도를 보였다고 한다. 망의 깊이와 정확도 간의 상관관계를 명확히 규정할 수 는 없지만, 망의 깊이가 깊어질 수록 더 많은 피쳐를 저장할 수 있기 때문에 망의 깊이가 깊을수록 정확도가 높아지는 것은 정설로 받아들여졌다.</p><p>
+  <ol style="text-align:left">
+  <li>Vanishing/Expolding Gradient</li>
+  <li>망이 깊어지면 Overfitting이 아니더라도 훈련에 어려움이 있음</li>
+</ol>
+  </p>
+<p style="text-align:left">
+그런데 망이 깊어지면 다음과 같은 문제점 때문에 망을 무작정 늘리기는 힘들다. 기존 인공신경망은 x가 주어졌을 때 H(x)를 구하는 것이 목표인데 마이크로소프트의 ResNet 설계팀은 H(x)를 구하는 것이 아니라 H(x)-x를 구하는 목표로 학습을 하는 네트워크를 설계했다. </p>
+<img src="https://pbs.twimg.com/media/CXFqt6mWEAE1KFC.png" alt="residual_learning" width="225" height="150" align="middle">
+<p></p><p style="text-align:left">이럴 경우 H(x)-x를 F(x)로 다시 쓰면 H(x)=F(x)+x이고 F(x)가 0이 될 때 H(x)가 가장 작아지기 때문에 x의 작은 변화도 더 잘 추출할 수 있고 x가 바로 출력층과 연결되므로 특별한 연산량 증가가 없기 때문에 망이 깊어져도 네트워크의 훈련이 가능해진다.</p>
+<h3></h3>
+
+
+  <h4 style="text-align:left"> 데이터 셋 확보 </h4>
+  <p style="text-align:left"> <a href="https://www.kaggle.com/c/dog-breed-identification">Kaggle Dog Breed Identification Competition</a>에서 제공하는 데이터셋을 사용하였다. 120여 종의 강아지 클래스를 분류하는 문제인데 대략 1만장의 사진을 제공한다.</p>
+  <h3></h3>
+  <h4 style="text-align:left"> 정확도 및 결론 </h4>
+  <p style="text-align:left"> CIFAR100 같은 경우 자동차도 있고 비버도 있고 사과도 있다. 즉, 기존 다루던 데이터는 각각 클래스들의 특징이 너무나도 달라 인간도 쉽게 구별할 수 있는 객체들이였다. 그런데 강아지와 고양이도 아니고 강아지를 품종별로 분류하려면 더 자세한 특징을 추출해야한다. 사실 이 서버에 로드된 모델 이전에 Convolution 필터를 3개 겹쳐쌓고 Relu, maxpool을 한 레이어를 4~5개 정도 쌓은 모델로 실험을 해봤는데 1/120 := 0.08과 거의 차이없는 정확도를 보였다. ResNet 같은 경우 Validation Set에 대해 90% 가까운 정확도를 보인다.</p>
+</div>
+
+<div class="container-fluid bg-3 text-center">
+  <h3>개발자소개</h3>
+  <img alt="@SeungyounShin" class="avatar rounded-2" height="200" src="https://avatars3.githubusercontent.com/u/20262536?s=400&amp;u=222cbf7d0f16ea01670db466dfa719e2bf48a627&amp;v=4" width="200">
+  <p>신승윤</p>
+<a href="https://www.facebook.com/profile.php?id=100004157167878">개발자 페이스북    </a><p></p>
+    <a href="https://github.com/SeungyounShin/Dog_Bread_Identification-Kaggle-">Github repository</a>
+</div>
+
+</body>
+</html>
